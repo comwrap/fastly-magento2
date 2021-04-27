@@ -491,7 +491,7 @@ class Api
      */
     public function getDataCenters()
     {
-        $url = $this->_getApiServiceUri() . 'datacenters';
+        $url = $this->config->getApiEndpoint() . 'datacenters/';
         return $this->_fetch($url, 'GET');
     }
 
