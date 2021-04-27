@@ -452,7 +452,7 @@ define([
                                    let text = $(document.createTextNode(dataCenter.label))
 
                                    $(option).append(text);
-                                   $(option).attr('value', dataCenter.value);
+                                   $(option).val(dataCenter.value);
                                    $(optGroup).append(option);
                                });
 
