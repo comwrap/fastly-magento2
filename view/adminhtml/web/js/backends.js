@@ -440,7 +440,7 @@ define([
                             }
                             $('#tls-no-port').attr('disabled', true);
 
-                            if (!_.isArray(response.data_centers))
+                            if (!_.isObject(response.data_centers))
                                 return;
 
                             $.each(response.data_centers, function (i, group) {
