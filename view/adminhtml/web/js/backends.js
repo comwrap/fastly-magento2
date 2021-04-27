@@ -444,12 +444,12 @@ define([
                                 return;
 
                             $.each(response.data_centers, function (i, group) {
-                               let optGroup = $(document).createElement('optgroup');
+                               let optGroup = $(document.createElement('optgroup'));
                                $(optGroup).attr('label', i);
 
                                $.each(group, function (j, dataCenter) {
-                                   let option = $(document).createElement('option');
-                                   let text = $(document).createTextNode(dataCenter.label)
+                                   let option = $(document.createElement('option'));
+                                   let text = $(document.createTextNode(dataCenter.label))
 
                                    $(option).append(text);
                                    $(option).attr('value', dataCenter.value);
