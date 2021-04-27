@@ -486,6 +486,16 @@ class Api
     }
 
     /**
+     * @return bool|mixed
+     * @throws LocalizedException
+     */
+    public function getDataCenters()
+    {
+        $url = $this->_getApiServiceUri() . 'datacenters';
+        return $this->_fetch($url, 'GET');
+    }
+
+    /**
      * Activate the current version.
      *
      * @param $version

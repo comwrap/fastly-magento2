@@ -95,7 +95,10 @@ class CreateBackend extends Action
             $this->validateAddress($address);
 
             if ($form == 'false') {
-                return $result->setData(['status' => true]);
+                return $result->setData([
+                    'status' => true,
+                    'data_centers' => $this->api->getDataCenters()
+                ]);
             }
 
             $override = $this->validateOverride($this->getRequest()->getParam('override_host'));
