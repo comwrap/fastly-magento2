@@ -238,13 +238,13 @@ class CreateBackend extends Action
 
         $data = [];
         foreach ($dataCenters as $dataCenter) {
-            if (!isset($dataCenter['group']) || !isset($dataCenter['name'])
-                || !isset($dataCenter['code']) || !isset($dataCenter['shield']))
+            if (!isset($dataCenter->group) || !isset($dataCenter->name)
+                || !isset($dataCenter->code) || !isset($dataCenter->shield))
                 continue;
 
-            $data[$dataCenter['group']][] = [
-                'option'    => $dataCenter['shield'],
-                'label'     => $dataCenter['name'] . ' (' . $dataCenter['code'] . ')'
+            $data[$dataCenter->group][] = [
+                'option'    => $dataCenter->shield,
+                'label'     => $dataCenter->name . ' (' . $dataCenter->code . ')'
             ];
         }
 

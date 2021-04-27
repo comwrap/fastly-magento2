@@ -5,8 +5,9 @@ define([
     "overlay",
     "resetAllMessages",
     "showErrorMessage",
-    'mage/translate'
-], function ($, confirmation, setServiceLabel, overlay, resetAllMessages, showErrorMessage) {
+    'mage/translate',
+    'underscore'
+], function ($, confirmation, setServiceLabel, overlay, resetAllMessages, showErrorMessage, _) {
     return function (config, serviceStatus, isAlreadyConfigured) {
 
         let backends;
@@ -439,7 +440,7 @@ define([
                             }
                             $('#tls-no-port').attr('disabled', true);
 
-                            if (response.data_centers !== true)
+                            if (!_.isArray(response.data_centers))
                                 return;
 
                             $.each(response.data_centers, function (i, group) {
