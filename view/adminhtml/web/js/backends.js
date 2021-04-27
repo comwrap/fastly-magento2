@@ -438,6 +438,26 @@ define([
                                 $('.weight').show();
                             }
                             $('#tls-no-port').attr('disabled', true);
+
+                            if (response.data_centers !== true)
+                                return;
+
+                            $.each(response.data_centers, function (i, group) {
+                               let optGroup = $(document).createElement('optgroup');
+                               $(optGroup).attr('label', i);
+
+                               $.each(group, function (j, dataCenter) {
+                                   let option = $(document).createElement('option');
+                                   let text = $(document).createTextNode(dataCenter.label)
+
+                                   $(option).append(text);
+                                   $(option).attr('value', dataCenter.value);
+                                   $(optGroup).append(option);
+                               });
+
+                                $('#backend_shield').append(optGroup)
+                            });
+
                         } else {
                             $('#fastly-error-create-backend-button-msg').text($.mage.__(response.msg)).show();
                         }
