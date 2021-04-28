@@ -452,7 +452,7 @@ define([
                                    let text = $(document.createTextNode(dataCenter.label))
 
                                    $(option).append(text);
-                                   $(option).val(dataCenter.option);
+                                   $(option).val(dataCenter.value);
                                    $(optGroup).append(option);
                                });
 
@@ -657,6 +657,25 @@ define([
                         $('.upload-button span').text('Update');
                         backend_name = backends[backend_id].name;
                         $('.modal-title').text($.mage.__('Backend "%1" configuration').replace('%1', backend_name));
+
+                        if (response.data_centers !== true || !_.isObject(response.data_centers))
+                            return;
+
+                        $.each(response.data_centers, function (i, group) {
+                            let optGroup = $(document.createElement('optgroup'));
+                            $(optGroup).attr('label', i);
+
+                            $.each(group, function (j, dataCenter) {
+                                let option = $(document.createElement('option'));
+                                let text = $(document.createTextNode(dataCenter.label))
+
+                                $(option).append(text);
+                                $(option).val(dataCenter.value);
+                                $(optGroup).append(option);
+                            });
+
+                            $('#backend_shield').append(optGroup)
+                        });
                     }
                 });
             });

@@ -20,13 +20,18 @@
  */
 namespace Fastly\Cdn\Controller\Adminhtml\FastlyCdn\Backend;
 
+use Exception;
 use Fastly\Cdn\Helper\Vcl;
 use Fastly\Cdn\Model\Api;
 use Fastly\Cdn\Model\Config;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Request\Http;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultInterface;
+use stdClass;
 
 /**
  * Class CreateBackend
@@ -84,7 +89,7 @@ class CreateBackend extends Action
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Json|\Magento\Framework\Controller\ResultInterface
+     * @return ResponseInterface|Json|ResultInterface
      */
     public function execute()
     {
@@ -219,7 +224,7 @@ class CreateBackend extends Action
                 'status'            => true,
                 'active_version'    => $clone->number
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $result->setData([
                 'status'    => false,
                 'msg'       => $e->getMessage()
@@ -233,7 +238,7 @@ class CreateBackend extends Action
      */
     public function groupDataCenters($dataCenters)
     {
-        if (!$dataCenters)
+        if (!$dataCenters instanceof stdClass || !$dataCenters)
             return false;
 
         $data = [];
@@ -243,7 +248,7 @@ class CreateBackend extends Action
                 continue;
 
             $data[$dataCenter->group][] = [
-                'option'    => $dataCenter->shield,
+                'value'    => $dataCenter->shield,
                 'label'     => $dataCenter->name . ' (' . $dataCenter->code . ')'
             ];
         }
