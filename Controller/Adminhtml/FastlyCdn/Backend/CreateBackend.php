@@ -238,7 +238,7 @@ class CreateBackend extends Action
      */
     public function groupDataCenters($dataCenters)
     {
-        if (!$dataCenters instanceof stdClass || !$dataCenters)
+        if (!$dataCenters)
             return false;
 
         $data = [];
