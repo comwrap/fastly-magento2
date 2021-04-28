@@ -658,7 +658,7 @@ define([
                         backend_name = backends[backend_id].name;
                         $('.modal-title').text($.mage.__('Backend "%1" configuration').replace('%1', backend_name));
 
-                        if (response !== false || !_.isObject(response.data_centers))
+                        if (!_.isObject(response.data_centers))
                             return;
 
                         $.each(response.data_centers, function (i, group) {
