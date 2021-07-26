@@ -48,6 +48,11 @@ class Config extends \Magento\PageCache\Model\Config
     const FASTLY = 'fastly';
 
     /**
+     * Old Cache type
+     */
+    const OLD_FASTLY_TYPE = 'fastly';
+
+    /**
      * Magento module prefix used for naming vcl snippets, condition and request
      */
     const FASTLY_MAGENTO_MODULE = 'magentomodule';
