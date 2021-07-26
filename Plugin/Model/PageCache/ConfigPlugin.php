@@ -15,7 +15,7 @@ class ConfigPlugin
     /**
      * @var ScopeConfigInterface
      */
-    private ScopeConfigInterface $scopeConfig;
+    private $scopeConfig;
 
     /**
      * ConfigPlugin constructor.

@@ -45,7 +45,7 @@ class Config extends \Magento\PageCache\Model\Config
     /**
      * Cache types
      */
-    const FASTLY = 'fastly';
+    const FASTLY = 40;
 
     /**
      * Old Cache type
