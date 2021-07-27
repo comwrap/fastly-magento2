@@ -20,8 +20,12 @@
  */
 namespace Fastly\Cdn\Setup;
 
+use Exception;
 use Fastly\Cdn\Helper\Data;
+use Fastly\Cdn\Model\Config as FastlyConfig;
+use InvalidArgumentException;
 use Magento\Framework\App\Cache\Manager;
+use Magento\Framework\App\Cache\Type\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\ProductMetadataInterface;
@@ -32,6 +36,7 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Serialize\SerializerInterface;
 use Fastly\Cdn\Model\Statistic;
+use Magento\PageCache\Model\Config as PageCacheConfig;
 
 /**
  * Class UpgradeData
@@ -173,6 +178,15 @@ class UpgradeData implements UpgradeDataInterface
         } elseif (version_compare($magVer, '2.2', '<')) {
             $setup->endSetup();
         }
+
+        if (version_compare($version, '1.0.15', '<')) {
+            $cacheType = $this->scopeConfig->getValue(PageCacheConfig::XML_PAGECACHE_TYPE);
+            if ($cacheType !== FastlyConfig::OLD_FASTLY_TYPE) {
+                return;
+            }
+
+            $this->configWriter->save(PageCacheConfig::XML_PAGECACHE_TYPE, FastlyConfig::FASTLY);
+        }
     }
 
     /**
@@ -217,7 +231,7 @@ class UpgradeData implements UpgradeDataInterface
             'system/full_page_cache/fastly/fastly_ga_cid',
             $this->statistic->generateCid()
         );
-        $this->cacheManager->clean([\Magento\Framework\App\Cache\Type\Config::TYPE_IDENTIFIER]);
+        $this->cacheManager->clean([Config::TYPE_IDENTIFIER]);
         $setup->endSetup();
     }
 
@@ -230,15 +244,15 @@ class UpgradeData implements UpgradeDataInterface
         $oldData = $this->scopeConfig->getValue($newConfigPaths['geoip_country_mapping']);
         try {
             $oldData = $this->serializeInterface->unserialize($oldData);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $oldData = [];
         }
         $oldData = (is_array($oldData)) ? $oldData : [];
         $newData = json_encode($oldData);
         if (false === $newData) {
-            throw new \InvalidArgumentException('Unable to encode data.');
+            throw new InvalidArgumentException('Unable to encode data.');
         }
         $this->configWriter->save($newConfigPaths['geoip_country_mapping'], $newData);
-        $this->cacheManager->clean([\Magento\Framework\App\Cache\Type\Config::TYPE_IDENTIFIER]);
+        $this->cacheManager->clean([Config::TYPE_IDENTIFIER]);
     }
 }

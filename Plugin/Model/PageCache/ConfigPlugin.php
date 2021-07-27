@@ -35,7 +35,7 @@ class ConfigPlugin
     public function afterGetType(Config $subject, $result)
     {
         $type = $this->scopeConfig->getValue(Config::XML_PAGECACHE_TYPE);
-        if ($type !== FastlyConfig::OLD_FASTLY_TYPE) {
+        if ($type != FastlyConfig::OLD_FASTLY_TYPE) {
             return $result;
         }
 
