@@ -60,13 +60,13 @@ class GraphQlPlugin
     {
         $result = "";
         if (\str_starts_with($query, 'gzip ') !== false) {
-            $result = \substr_replace($query, '', '0', '5');
+            $result = \substr_replace($query, '', 0, 5);
             $result = \base64_decode($result);
-            if($result){
+            if ($result) {
                 $result = @\gzuncompress($result);
             }
         } elseif (\str_starts_with($query, 'plain ') !== false) {
-            $result = \substr_replace($query, '', '0', '6');
+            $result = \substr_replace($query, '', 0, 6);
             $result = \base64_decode($result);
         }
         return (string)$result;
