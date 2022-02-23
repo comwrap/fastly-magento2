@@ -42,9 +42,7 @@ class GraphQlPlugin
                 if ($request->isGet()) {
                     $request->setParam('query', $fastlyHeaderQuery);
                 } elseif ($request->isPost()) {
-                    $request->setContent(
-                        json_encode(['query' => $fastlyHeaderQuery])
-                    );
+                    $request->setContent($fastlyHeaderQuery);
                 }
             }
         }
