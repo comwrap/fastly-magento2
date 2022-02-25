@@ -3,11 +3,14 @@
 namespace Fastly\Cdn\Model;
 
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\GraphQl\Controller\GraphQl;
 
 class GraphQlPlugin
 {
     private $config;
+
+    private $jsonSerializer;
 
     /**
      * GraphQlPlugin constructor.
@@ -15,10 +18,12 @@ class GraphQlPlugin
      * @param Config $config
      */
     public function __construct(
-        Config $config
+        Config $config,
+        SerializerInterface $jsonSerializer
     )
     {
         $this->config = $config;
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     /**
@@ -39,10 +44,17 @@ class GraphQlPlugin
             $fastlyHeaderQuery = $this->decodeQuery($fastlyHeader);
 
             if ($fastlyHeaderQuery) {
-                if ($request->isGet()) {
-                    $request->setParam('query', $fastlyHeaderQuery);
-                } elseif ($request->isPost()) {
-                    $request->setContent($fastlyHeaderQuery);
+                $data = $this->jsonSerializer->unserialize($fastlyHeaderQuery);
+
+                if (isset($data['query'])) {
+                    $request->setParam('query', $data['query']);
+                }
+
+                if (isset($data['variables'])) {
+                    $request->setParam('variables', $this->jsonSerializer->serialize($data['variables']));
+                }
+                if (isset($data['operationName'])) {
+                    $request->setParam('operationName', $data['operationName']);
                 }
             }
         }
